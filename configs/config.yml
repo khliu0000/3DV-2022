@@ -1,14 +1,15 @@
 # input data
-base_dir: /home/odie/3DV-2022
-data_dir: ${base_dir}/data/chair_img_pc_voxel_mesh
+base_dir: /home/khliu/3DV-2022/
+data_dir: ${base_dir}/data/chair
 dtype: "point" # "point" "voxel"
-n_points: 2048
+n_points: 4096
 
 # vision model
 arch: resnet18
+latent_size: 512
 
 # training
-lr: 0.0004
+lr: 0.0001
 max_iter: 10000
 
 # dataloader
@@ -23,6 +24,61 @@ save_freq: 100
 load_checkpoint: False
 
 # eval
-vis_freq: 1000
+vis_freq: 300
 load_eval_checkpoint: True
 
+# Setting1  lr: 0.0004  n_points: 2048  arch: resnet18
+# [ 676/10000]; ttime: 39 (0.00, 0.02); eva_loss: 0.005964
+# [ 676/10000]; ttime: 1784 (0.00, 0.02); eva_loss: 0.151937
+
+# Setting2  lr: 0.001  n_points: 4096  arch: resnet18
+# [ 676/10000]; ttime: 50 (0.00, 0.03); eva_loss: 0.006048
+# [ 676/10000]; ttime: 266 (0.00, 0.02); eva_loss: 0.167714
+
+# Setting3  lr: 0.001  n_points: 2048  arch: resnet18
+# [ 676/10000]; ttime: 35 (0.00, 0.02); eva_loss: 0.006639
+
+# Setting4  lr: 0.007  n_points: 2048  arch: resnet18
+# [ 676/10000]; ttime: 27 (0.00, 0.02); eva_loss: 0.006377
+# [ 676/10000]; ttime: 509 (0.00, 0.01); eva_loss: 0.160161  
+
+# Setting5  lr: 0.0004  n_points: 4096  arch: resnet18
+# [ 676/10000]; ttime: 69 (0.00, 0.03); eva_loss: 0.005227
+
+# Setting6  lr: 0.0002  n_points: 4096  arch: resnet18
+# [ 676/10000]; ttime: 66 (0.00, 0.03); eva_loss: 0.004738
+# [ 676/10000]; ttime: 1216 (0.00, 0.04); eva_loss: 0.143936
+
+# Setting7  lr: 0.0002  n_points: 2048  arch: resnet18
+# [ 676/10000]; ttime: 66 (0.00, 0.03); eva_loss: 0.005322
+
+# Setting8  lr: 0.0001  n_points: 4096  arch: resnet18
+# [ 676/10000]; ttime: 58 (0.00, 0.03); eva_loss: 0.004488
+# [ 676/10000]; ttime: 973 (0.02, 0.03); eva_loss: 0.124132
+
+# Setting9  lr: 0.00005  n_points: 4096  arch: resnet18
+# [ 676/10000]; ttime: 59 (0.00, 0.03); eva_loss: 0.004589
+# [ 676/10000]; ttime: 980 (0.00, 0.03); eva_loss: 0.110937 
+
+# Setting10  lr: 0.000025  n_points: 4096  arch: resnet18
+# [ 676/10000]; ttime: 65 (0.00, 0.04); eva_loss: 0.004927
+# [ 676/10000]; ttime: 1001 (0.00, 0.02); eva_loss: 0.117315
+
+# Setting11  lr: 0.00005  n_points: 2048  arch: resnext101_32x8d
+# [ 676/10000]; ttime: 85 (0.00, 0.11); eva_loss: 0.005131
+# [ 676/10000]; ttime: 991 (0.00, 0.10); eva_loss: 0.119830
+
+# setting12  lr: 0.00005  n_points: 2048  arch: resnet34
+# [ 676/10000]; ttime: 57 (0.00, 0.07); eva_loss: 0.005178
+# [ 676/10000]; ttime: 1023 (0.00, 0.02); eva_loss: 0.117818
+
+# Setting13  lr: 0.0001  n_points: 2048  arch: resnet34
+# [ 676/10000]; ttime: 55 (0.00, 0.06); eva_loss: 0.005233
+# [ 676/10000]; ttime: 983 (0.00, 0.04); eva_loss: 0.126250
+
+# Setting14  lr: 0.000025  n_points: 2048  arch: resnet34
+# [ 676/10000]; ttime: 52 (0.00, 0.04); eva_loss: 0.005347
+# [ 676/10000]; ttime: 961 (0.00, 0.02); eva_loss: 0.114398
+
+# Setting15  lr: 0.00005  n_points: 4096  arch: resnet34
+# [ 676/10000]; ttime: 71 (0.00, 0.06); eva_loss: 0.004582

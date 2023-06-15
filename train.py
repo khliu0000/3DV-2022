@@ -3,26 +3,17 @@ import torch
 from src.dataset import ShapeNetDB
 from src.model import SingleViewto3D
 import src.losses as losses
-from src.losses import ChamferDistanceLoss
 
 import hydra
 from omegaconf import DictConfig
 
-cd_loss = ChamferDistanceLoss()
+cd_loss = losses.chamfer_loss
 
 def calculate_loss(predictions, ground_truth, cfg):
     if cfg.dtype == 'voxel':
         loss = losses.voxel_loss(predictions,ground_truth)
     elif cfg.dtype == 'point':
-        loss = cd_loss(predictions, ground_truth)
-    # elif cfg.dtype == 'mesh':
-    #     sample_trg = sample_points_from_meshes(ground_truth, cfg.n_points)
-    #     sample_pred = sample_points_from_meshes(predictions, cfg.n_points)
-
-    #     loss_reg = losses.chamfer_loss(sample_pred, sample_trg)
-    #     loss_smooth = losses.smoothness_loss(predictions)
-
-        # loss = cfg.w_chamfer * loss_reg + cfg.w_smooth * loss_smooth        
+        loss = cd_loss(predictions, ground_truth)   
     return loss
 
 @hydra.main(config_path="configs/", config_name="config.yml")
@@ -69,6 +60,9 @@ def train_model(cfg: DictConfig):
         read_time = time.time() - read_start_time
 
         prediction_3d = model(images_gt, cfg)
+        if cfg.dtype == 'voxel':
+            ground_truth_3d = ground_truth_3d.int()
+        # print(f"{(prediction_3d).sum().item()} : {ground_truth_3d.sum().item()}")
 
         loss = calculate_loss(prediction_3d, ground_truth_3d, cfg)
 

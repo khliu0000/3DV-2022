@@ -1,20 +1,30 @@
 import torch
 
 # define losses
-def voxel_loss(voxel_src,voxel_tgt):
-	# loss = 
-	# implement some loss for binary voxel grids
-	return prob_loss
+def voxel_loss(voxel_src, voxel_tgt):
+    pred = voxel_src.view(-1, 1).float().clamp(1e-7, 1-1e-7)
+    gt = voxel_tgt.view(-1, 1).float()
+    prob_loss = -1 * ((gt*(pred+1e-7).log())+((1-gt)*(1-pred+1e-7).log())).mean()
+    return prob_loss
 
-def chamfer_loss(point_cloud_src,point_cloud_tgt):
-	# loss_chamfer = 
-	# implement chamfer loss from scratch
-	return loss_chamfer
+def chamfer_loss(point_cloud_src, point_cloud_tgt, each_batch=False):
+    loss1 = pts_dist(point_cloud_src, point_cloud_tgt)
+    loss2 = pts_dist(point_cloud_tgt, point_cloud_src)
+    loss_chamfer = loss1 + loss2
+    if each_batch:
+        return loss_chamfer
+    else:
+        return loss_chamfer.mean()
 
-# def smoothness_loss(mesh_src):
-# 	# loss = 
-# 	# implement laplacian smoothening loss
-# 	return loss_laplacian
+def pts_dist(pts1, pts2):
+    pts1 = pts1[:, :, None, :]
+    pts2 = pts2[:, None, :, :]
+    min_dist = pts1-pts2
+    min_dist = min_dist * min_dist
+    min_dist = min_dist.sum(dim=3).sqrt()
+    min_dist = min_dist * min_dist
+    min_dist = min_dist.min(dim=2).values.mean(dim=1)
+    return min_dist
 
 class ChamferDistanceLoss(torch.nn.Module):
     def __init__(self):
